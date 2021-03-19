@@ -1,4 +1,5 @@
 from collections import deque
+from math import log
 
 
 def base60_decimise(call: str):
@@ -32,7 +33,24 @@ def base60_delistise(call: list):
     return call
 
 
-def base60_sum(*call):
+def base60_carry(call: list):
+    back = []
+    power = int(log(call[-1], 60))
+    call.extend([0]*power)
+    # gives us as much additional hexacontamal digits as needed
+    carry = 0
+    for pl, val in enumerate(call):
+        bval = val + carry
+        if bval > 59:
+            carry = bval // 60
+            bval %= 60
+        else:
+            carry = 0
+        back.append(bval)
+    return back
+
+
+def base60_list_sum(*call):
     """
 
     :param call: a tuple of base60 lists
@@ -43,17 +61,27 @@ def base60_sum(*call):
     for lst in call:
         for pl, val in enumerate(lst):
             back[pl] += val
+    back = base60_carry(back)
     return back
 
 
-def base60_complete_sum(*cali):
+def base60_string_sum(*cali):
+    """
+
+    :param cali: strings of base60 numbers
+    :return: string of base60 numbers
+    """
     cali = tuple(base60_listise(call) for call in cali)
-    back = base60_sum(cali)
+    # cali = map(base60_listise, cali)
+    back = base60_list_sum(*cali)
     back = base60_delistise(back)
     return back
 
 
-def base60_sum2(*call,sum =[]):
+base60_sum = base60_string_sum
+
+
+def base60_list_sum2(*call, sum=[]):
     """
 
     :param call: a tuple of base60 lists
@@ -68,7 +96,7 @@ def base60_sum2(*call,sum =[]):
         return sum
     else:
         call = call[1:]
-        newsum = base60_sum2(*call,sum)
+        newsum = base60_list_sum2(*call,sum)
         return newsum
 
 # Todo: make base60_sum2 recusive that's just kinda intresting :-)
