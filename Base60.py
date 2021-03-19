@@ -72,7 +72,6 @@ def base60_string_sum(*cali):
     :return: string of base60 numbers
     """
     cali = tuple(base60_listise(call) for call in cali)
-    # cali = map(base60_listise, cali)
     back = base60_list_sum(*cali)
     back = base60_delistise(back)
     return back
