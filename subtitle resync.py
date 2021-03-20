@@ -1,19 +1,17 @@
 from codecs import open
 from TimeCode import TimeCode
 
-folder ='Normal.People.S01/'
-name ='Normal.People.S01E02.he.srt'
+folder = 'The Morning Show Season 1 Mp4 1080p/'
+name = 'The.Morning.Show.S01E02.WEB.x264-PHOENiX-eng.srt'
 
-Scroll = open("D:/Videos/Telly/"+folder+name, 'r+', 'utf-8')
-Codex = open(name, 'w+', 'utf-8')
+with open("D:/Videos/Telly/"+folder+name, 'r+', 'utf-8-sig') as Scroll:
+    lini = Scroll.readlines()
+Codex = open(name, 'w+', 'utf-8-sig')
 
-fix = '0:0:0,17'
-positive = 0
+fix = '0:0:01,343'
+positive = 1
 
 fix = TimeCode(fix)
-
-lini = Scroll.readlines()
-
 
 for pl, line in enumerate(lini):
     try:
@@ -30,3 +28,4 @@ for pl, line in enumerate(lini):
 
 for line in lini:
     Codex.write(line)
+    print(line)

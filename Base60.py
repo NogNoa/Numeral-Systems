@@ -14,7 +14,7 @@ def base60_decimise(call: str):
 def base10_haxacontamise(call: int, depth=3):
     """that is turn base 10 to base 60"""
     back = ''
-    for i in range(depth):
+    for _ in range(depth):
         back = str(call % 60) + ':' + back
         call = call // 60
     back = back[:-1]
@@ -81,20 +81,22 @@ def base60_string_sum(*cali):
 base60_sum = base60_string_sum
 
 
-def base60_list_sum2(*call):
+def base60_list_sum2(*call, sum=[]):
     """
 
     :param call: a tuple of base60 lists
     :return: a base 60 list which is the sum of all of them
     """
-    mxlen = max(len(lst) for lst in call)
-    q = deque(call)
-    back = [0] * mxlen
-    while q:
-        for pl, _ in enumerate(back):
-            back[pl] += q[0][pl]
-        q.popleft()
-        rest = base60_sum2(q)
-    return back
+    lst = call[0]
+    Δ =  len(lst) - len(sum)
+    sum += [0] * Δ
+    for pl, val in enumerate(lst):
+        sum[pl] += val
+    if call[0] is call[-1]:
+        return sum
+    else:
+        call = call[1:]
+        newsum = base60_list_sum2(*call,sum)
+        return newsum
 
 # Todo: make base60_sum2 recusive that's just kinda intresting :-)
