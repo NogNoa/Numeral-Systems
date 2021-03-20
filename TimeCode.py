@@ -37,19 +37,19 @@ def timecode_listise(call: str):
 
 
 def list_timecodise(call: list):
-    call[0] = str(call[0])
-    call[0] = '0' * (3 - len(call[0])) + call[0]
+    call[0] = f"{call[0]:03d}"
     for pl, val in enumerate(call[1]):
-        val = str(val)
-        call[1][pl] = '0' * (2 - len(val)) + val
+        call[1][pl] = f"{val:02d}"
     call[1] = ':'.join(call[1][::-1])
     back = ','.join(call[::-1])
     return back
 
 
 if __name__ == "__main__":
-    a = TimeCode('00:01:44,479')
+    a = TimeCode('0:1:44,009')
     print(a.val)
     b = TimeCode('00:01:44,579')
     c = a.add(b)
     print(c.expose())
+    d = list_timecodise(a.val)
+    print(d)
