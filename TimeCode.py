@@ -5,42 +5,51 @@ class TimeCode:
 
     def __init__(self, call):
         if type(call) is str:
-            self.val = timecode_listise(call)
-        elif type(call) is list:
-            self.val = call
+            self.ms, self.time60 = timecode_variablise(call)
+        if type(call) is list:
+            self.ms, self.time60 = int(call[0]), call[1]
+        self.time60 = [int(i) for i in self.time60]
+
+    def __str__(self):
+        return self.expose()
 
     def add(self, addend, positive=True):
-        call = self.val
-        addend = addend.val
-        miliseconds = (call[0] + addend[0] * (positive * 2 - 1))
-        call[1][0] += miliseconds // 1000
-        miliseconds %= 1000
+        back_ms = (self.ms + addend.ms * (positive * 2 - 1))
+        self.time60[0] += back_ms // 1000
+        back_ms %= 1000
         if positive:
-            time60 = Base60.base60_list_sum(call[1], addend[1])
+            back_time60 = Base60.base60_list_sum(self.time60, addend.time60)
         else:
-            time60 = [0]
+            back_time60 = [0]
             for i in range(3):
-                time60.append(call[1][i] - addend[1][i])
+                back_time60.append(self.time60[i] - addend.time60[i])
                 try:
-                    time60[i] += time60[1][i - 1] // 60
-                    time60[1][i - 1] %= 60
+                    back_time60[i] += back_time60[1][i - 1] // 60
+                    back_time60[1][i - 1] %= 60
                 except IndexError:
                     pass
-        back = [miliseconds, time60]
+        back = [back_ms, back_time60]
         return TimeCode(back)
 
     def expose(self):
-        return list_timecodise(self.val)
+        return self.var_timecodise()
+
+    def var_timecodise(self):
+        ms = f"{self.ms:03d}"
+        time60 = self.time60
+        for pl, val in enumerate(time60):
+            time60[pl] = f"{val:02d}"
+        time60 = ':'.join(time60[::-1])
+        back = time60 + ',' + ms
+        return back
 
 
-def timecode_listise(call: str):
+def timecode_variablise(call: str):
     call = call.split(',')[::-1]
-    # call is now formated ['ms', 'h:m:s']
-    call[1] = Base60.base60_listise(call[1])
-    # noinspection PyTypeChecker
-    call[0] = int(call[0])
-    # call is now formated [ms, [s, m, h]]
-    return call
+    ms, time60 = int(call[0]), call[1]
+    time60 = Base60.base60_listise(time60)
+
+    return ms, time60
 
 
 def list_timecodise(call: list):
@@ -54,9 +63,12 @@ def list_timecodise(call: list):
 
 if __name__ == "__main__":
     a = TimeCode('0:1:44,009')
-    print(a.val)
+    print(a.expose())
     b = TimeCode('00:01:44,579')
     c = a.add(b)
     print(c.expose())
-    d = list_timecodise(a.val)
+    d = timecode_variablise(a.expose())
     print(d)
+
+# todo: wtf why time60 items turn to strings
+#  get substracting back to add
