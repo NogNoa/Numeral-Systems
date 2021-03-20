@@ -1,4 +1,3 @@
-from collections import deque
 from math import log
 
 
@@ -81,22 +80,21 @@ def base60_string_sum(*cali):
 base60_sum = base60_string_sum
 
 
-def base60_list_sum2(*call, sum=[]):
+def base60_list_sum2(*call, sam=[]):
     """
 
     :param call: a tuple of base60 lists
+    :param sam: partial sum in the computation
     :return: a base 60 list which is the sum of all of them
     """
     lst = call[0]
-    Δ =  len(lst) - len(sum)
-    sum += [0] * Δ
+    Δ = len(lst) - len(sam)
+    sam += [0] * Δ
     for pl, val in enumerate(lst):
-        sum[pl] += val
+        sam[pl] += val
     if call[0] is call[-1]:
-        return sum
+        return sam
     else:
         call = call[1:]
-        newsum = base60_list_sum2(*call,sum)
+        newsum = base60_list_sum2(*call, sam)
         return newsum
-
-# Todo: make base60_sum2 recusive that's just kinda intresting :-)
