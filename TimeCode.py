@@ -1,4 +1,4 @@
-from Base60 import base60_listise
+import Base60
 
 
 class TimeCode:
@@ -12,14 +12,21 @@ class TimeCode:
     def add(self, addend, positive=True):
         call = self.val
         addend = addend.val
-        back = [(call[0] + addend[0] * (positive * 2 - 1)), []]
-        for i in range(3):
-            back[1].append(call[1][i] + addend[1][i] * (positive * 2 - 1))
-        back[1][0] += back[0] // 1000
-        back[0] %= 1000
-        for i in range(1, 3):
-            back[1][i] += back[1][i - 1] // 60
-            back[1][i - 1] %= 60
+        miliseconds = (call[0] + addend[0] * (positive * 2 - 1))
+        call[1][0] += miliseconds // 1000
+        miliseconds %= 1000
+        if positive:
+            time60 = Base60.base60_list_sum(call[1], addend[1])
+        else:
+            time60 = [0]
+            for i in range(3):
+                time60.append(call[1][i] - addend[1][i])
+                try:
+                    time60[i] += time60[1][i - 1] // 60
+                    time60[1][i - 1] %= 60
+                except IndexError:
+                    pass
+        back = [miliseconds, time60]
         return TimeCode(back)
 
     def expose(self):
@@ -29,7 +36,7 @@ class TimeCode:
 def timecode_listise(call: str):
     call = call.split(',')[::-1]
     # call is now formated ['ms', 'h:m:s']
-    call[1] = base60_listise(call[1])
+    call[1] = Base60.base60_listise(call[1])
     # noinspection PyTypeChecker
     call[0] = int(call[0])
     # call is now formated [ms, [s, m, h]]

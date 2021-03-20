@@ -34,9 +34,17 @@ def base60_delistise(call: list):
 
 def base60_carry(call: list):
     back = []
-    power = int(log(call[-1], 60))
-    call.extend([0]*power)
-    # gives us as much additional hexacontamal digits as needed
+    try:
+        power = int(log(call[-1], 60))
+        call.extend([0]*power)
+    except ValueError:
+        if call[-1] == 0:
+            pass
+        else:
+            raise
+    # gives us as much additional hexacontamal digits as needed.
+    # if most significant digit is 0 log will fail and the subroutine is unneeded.
+    #
     carry = 0
     for pl, val in enumerate(call):
         bval = val + carry
