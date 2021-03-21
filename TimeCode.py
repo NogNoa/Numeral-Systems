@@ -36,7 +36,7 @@ class TimeCode:
 
     def var_timecodise(self):
         ms = f"{self.ms:03d}"
-        time60 = self.time60
+        time60 = self.time60[::]
         for pl, val in enumerate(time60):
             time60[pl] = f"{val:02d}"
         time60 = ':'.join(time60[::-1])
@@ -70,5 +70,4 @@ if __name__ == "__main__":
     d = timecode_variablise(a.expose())
     print(d)
 
-# todo: wtf why time60 items turn to strings
-#  get substracting back to add
+# todo: get substracting back to add
