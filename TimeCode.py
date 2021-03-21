@@ -10,15 +10,16 @@ class TimeCode:
             self.ms, self.time60 = int(call[0]), call[1]
         self.time60 = [int(i) for i in self.time60]
 
-    def __str__(self):
-        return self.expose()
+        self.__str__ = self.var_timecodise
+        self.expose = self.var_timecodise
+        self.__add__ = self.add
 
     def add(self, addend, positive=True):
-        back_ms = (self.ms + addend.ms * (positive * 2 - 1))
+        back_ms = self.ms + addend.ms * (positive * 2 - 1)
         self.time60[0] += back_ms // 1000
         back_ms %= 1000
         if positive:
-            back_time60 = Base60.base60_list_sum(self.time60, addend.time60)
+            back_time60 = Base60.list_sum_60(self.time60, addend.time60)
         else:
             back_time60 = [0]
             for i in range(3):
@@ -30,9 +31,6 @@ class TimeCode:
                     pass
         back = [back_ms, back_time60]
         return TimeCode(back)
-
-    def expose(self):
-        return self.var_timecodise()
 
     def var_timecodise(self):
         ms = f"{self.ms:03d}"
@@ -47,7 +45,7 @@ class TimeCode:
 def timecode_variablise(call: str):
     call = call.split(',')[::-1]
     ms, time60 = int(call[0]), call[1]
-    time60 = Base60.base60_listise(time60)
+    time60 = Base60.string_listise(time60)
 
     return ms, time60
 
@@ -69,5 +67,8 @@ if __name__ == "__main__":
     print(c.expose())
     d = timecode_variablise(a.expose())
     print(d)
+    e = b.add(a, positive=False)
+    print(e.expose())
 
 # todo: get substracting back to add
+#       turn out it's not as easy as just tweaking Base60.list_sum_60
