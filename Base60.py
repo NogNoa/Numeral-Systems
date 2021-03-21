@@ -40,13 +40,13 @@ def carry_60(call: list):
     #
     carry = 0
     for pl, val in enumerate(call):
-        bval = val + carry
-        if bval > 59:
-            carry = bval // 60
-            bval %= 60
+        bck_val = val + carry
+        if bck_val > 59:
+            carry = bck_val // 60
+            bck_val %= 60
         else:
             carry = 0
-        back.append(bval)
+        back.append(bck_val)
     if back[-1] == 0:
         del(back[-1])
     return back
@@ -78,6 +78,16 @@ def string_sum_60(*cali):
     # cali = map(base60_listise, cali)
     back = list_sum_60(*cali)
     back = list_stringise(back)
+    return back
+
+
+def subtract_60(minuend, subtrahend):
+    back = []
+    Δ = len(subtrahend) - len(minuend)
+    minuend += [0] * Δ
+    for i, val in enumerate(minuend):
+        back.append(val - subtrahend[i])
+    back = carry_60(back)
     return back
 
 

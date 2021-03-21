@@ -21,14 +21,7 @@ class TimeCode:
         if positive:
             back_time60 = Base60.list_sum_60(self.time60, addend.time60)
         else:
-            back_time60 = [0]
-            for i in range(3):
-                back_time60.append(self.time60[i] - addend.time60[i])
-                try:
-                    back_time60[i] += back_time60[1][i - 1] // 60
-                    back_time60[1][i - 1] %= 60
-                except IndexError:
-                    pass
+            back_time60 = Base60.subtract_60(self.time60, addend.time60)
         back = [back_ms, back_time60]
         return TimeCode(back)
 
@@ -60,7 +53,7 @@ def list_timecodise(call: list):
 
 
 if __name__ == "__main__":
-    a = TimeCode('0:1:44,009')
+    a = TimeCode('0:1:30,009')
     print(a.expose())
     b = TimeCode('00:01:44,579')
     c = a.add(b)
@@ -70,5 +63,4 @@ if __name__ == "__main__":
     e = b.add(a, positive=False)
     print(e.expose())
 
-# todo: get substracting back to add
-#       turn out it's not as easy as just tweaking Base60.list_sum_60
+
