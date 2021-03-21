@@ -1,6 +1,3 @@
-from collections import deque
-
-
 def base60_decimise(call: str):
     call = string_listise(call)
     depth = len(call)
@@ -48,14 +45,13 @@ def carry_60(call: list):
             carry = 0
         back.append(bck_val)
     if back[-1] == 0:
-        del(back[-1])
+        del (back[-1])
     return back
 
 
 def list_sum_60(*call):
     """
 
-    :param positive: True:addition  False:subtraction
     :param call: a tuple of base60 lists
     :return: a base 60 list which is the sum of all of them
     """
@@ -93,18 +89,14 @@ def subtract_60(minuend, subtrahend):
 
 base60_sum = string_sum_60
 
-"""
 
 def base60_list_sum2(*call, sam=None):
     """
-"""
     completely unusable :-)
     :param call: a tuple of base60 lists
     :param sam: partial sum in the computation
     :return: a base 60 list which is the sum of all of them
     """
-"""
-    call = deque(call)
     if sam is None:
         sam = []
     lst = call[0]
@@ -115,7 +107,6 @@ def base60_list_sum2(*call, sam=None):
     if call[0] is call[-1]:
         return sam
     else:
-        call.popleft()
+        call = call[1:]
         newsum = base60_list_sum2(call, sam)
         return newsum
-"""
