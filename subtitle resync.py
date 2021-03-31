@@ -21,11 +21,11 @@ for pl, line in enumerate(lini):
             finish = TimeCode(line[2])
             start = start.add(fix, positive)
             finish = finish.add(fix, positive)
-            line = [start.expose(), line[1], finish.expose()]
+            line = [str(start), line[1], str(finish)]
             lini[pl] = ' '.join(line) + '\n'
+            print(line)
     except IndexError:
         pass
 
 for line in lini:
     Codex.write(line)
-    print(line)

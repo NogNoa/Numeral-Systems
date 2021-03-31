@@ -10,10 +10,6 @@ class TimeCode:
             self.ms, self.time60 = int(call[0]), call[1]
         self.time60 = [int(i) for i in self.time60]
 
-        self.__str__ = self.var_timecodise
-        self.expose = self.var_timecodise
-        self.__add__ = self.add
-
     def add(self, addend, positive=True):
         back_ms = self.ms + addend.ms * (positive * 2 - 1)
         self.time60[0] += back_ms // 1000
@@ -33,6 +29,23 @@ class TimeCode:
         time60 = ':'.join(time60[::-1])
         back = time60 + ',' + ms
         return back
+
+    __str__ = var_timecodise
+    expose = var_timecodise
+    __add__ = add
+
+    def __sub__(self, subtrend):
+        return self.add(subtrend, False)
+
+
+def timecode_listise(call: str):
+    call = call.split(',')[::-1]
+    # call is now formated ['ms', 'h:m:s']
+    call[1] = Base60.string_listise(call[1])
+    # noinspection PyTypeChecker
+    call[0] = int(call[0])
+    # call is now formated [ms, [s, m, h]]
+    return call
 
 
 def timecode_variablise(call: str):
@@ -56,11 +69,9 @@ if __name__ == "__main__":
     a = TimeCode('0:1:30,009')
     print(a.expose())
     b = TimeCode('00:01:44,579')
-    c = a.add(b)
+    c = a + b
     print(c.expose())
     d = timecode_variablise(a.expose())
     print(d)
     e = b.add(a, positive=False)
     print(e.expose())
-
-
