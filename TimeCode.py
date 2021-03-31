@@ -75,3 +75,6 @@ if __name__ == "__main__":
     print(d)
     e = b.add(a, positive=False)
     print(e.expose())
+    f = TimeCode('-00:11:20,733')
+    e = b.add(f)
+    print(str(e))
