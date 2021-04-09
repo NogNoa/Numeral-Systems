@@ -1,19 +1,25 @@
+import argparse
+from ntpath import basename
 from codecs import open
 from TimeCode import TimeCode
 
-folder ='Normal.People.S01/'
-name ='Normal.People.S01E02.he.srt'
+parser = argparse.ArgumentParser()
+parser.add_argument('srt', help='path to subtitle file to be resynced')
+parser.add_argument('fix', help="time difference in format h:m:s,ms. Minus sign to make the fix negative ")
+args = parser.parse_args()
 
-Scroll = open("D:/Videos/Telly/"+folder+name, 'r+', 'utf-8')
-Codex = open(name, 'w+', 'utf-8')
+srt = args.srt
 
-fix = '0:0:0,17'
-positive = 0
+with open(srt, 'r+', 'utf-8-sig') as Scroll:
+    lini = Scroll.readlines()
+Codex = open(basename(srt), 'w+', 'utf-8-sig')
 
-fix = TimeCode(fix)
+if args.fix[0] == '-':
+    positive = False
+else:
+    positive = True
 
-lini = Scroll.readlines()
-
+fix = TimeCode(args.fix)
 
 for pl, line in enumerate(lini):
     try:
@@ -23,8 +29,9 @@ for pl, line in enumerate(lini):
             finish = TimeCode(line[2])
             start = start.add(fix, positive)
             finish = finish.add(fix, positive)
-            line = [start.expose(), line[1], finish.expose()]
+            line = [str(start), line[1], str(finish)]
             lini[pl] = ' '.join(line) + '\n'
+            print(line)
     except IndexError:
         pass
 

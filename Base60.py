@@ -1,9 +1,5 @@
-from collections import deque
-from math import log
-
-
 def base60_decimise(call: str):
-    call = base60_listise(call)
+    call = string_listise(call)
     depth = len(call)
     back = 0
     for pl, val in enumerate(call):
@@ -21,36 +17,39 @@ def base10_haxacontamise(call: int, depth=3):
     return back
 
 
-def base60_listise(call: str):
+def string_listise(call: str):
     call = call.split(':')[::-1]  # '20:15' becomes ['15','20']
     call = [int(val) for val in call]
     return call
 
 
-def base60_delistise(call: list):
+def list_stringise(call: list):
     call = [str(val) for val in call]
     call = ':'.join(call[::-1])
     return call
 
 
-def base60_carry(call: list):
+def carry_60(call: list):
     back = []
-    power = int(log(call[-1], 60))
-    call.extend([0]*power)
-    # gives us as much additional hexacontamal digits as needed
+    call.append(0)
+    # gives us as much additional hexacontamal digits as needed.
+    # if most significant digit is 0 log will fail and the subroutine is unneeded.
+    #
     carry = 0
     for pl, val in enumerate(call):
-        bval = val + carry
-        if bval > 59:
-            carry = bval // 60
-            bval %= 60
+        bck_val = val + carry
+        if bck_val > 59:
+            carry = bck_val // 60
+            bck_val %= 60
         else:
             carry = 0
-        back.append(bval)
+        back.append(bck_val)
+    if back[-1] == 0:
+        del (back[-1])
     return back
 
 
-def base60_list_sum(*call):
+def list_sum_60(*call):
     """
 
     :param call: a tuple of base60 lists
@@ -61,41 +60,59 @@ def base60_list_sum(*call):
     for lst in call:
         for pl, val in enumerate(lst):
             back[pl] += val
-    back = base60_carry(back)
+    back = carry_60(back)
     return back
 
 
-def base60_string_sum(*cali):
+def string_sum_60(*cali):
     """
 
     :param cali: strings of base60 numbers
     :return: string of base60 numbers
     """
+<<<<<<< HEAD
     cali = tuple(base60_listise(call) for call in cali)
     back = base60_list_sum(*cali)
     back = base60_delistise(back)
+=======
+    cali = tuple(string_listise(call) for call in cali)
+    # cali = map(base60_listise, cali)
+    back = list_sum_60(*cali)
+    back = list_stringise(back)
     return back
 
 
-base60_sum = base60_string_sum
+def subtract_60(minuend, subtrahend):
+    back = []
+    Δ = len(subtrahend) - len(minuend)
+    minuend += [0] * Δ
+    for i, val in enumerate(minuend):
+        back.append(val - subtrahend[i])
+    back = carry_60(back)
+>>>>>>> 5f894970e1d6caa739c9bb5809b91ffe94956727
+    return back
 
 
-def base60_list_sum2(*call, sum=[]):
+base60_sum = string_sum_60
+
+
+def base60_list_sum2(*call, sam=None):
     """
-
+    completely unusable :-)
     :param call: a tuple of base60 lists
+    :param sam: partial sum in the computation
     :return: a base 60 list which is the sum of all of them
     """
+    if sam is None:
+        sam = []
     lst = call[0]
-    Δ =  len(lst) - len(sum)
-    sum += [0] * Δ
+    Δ = len(lst) - len(sam)
+    sam += [0] * Δ
     for pl, val in enumerate(lst):
-        sum[pl] += val
+        sam[pl] += val
     if call[0] is call[-1]:
-        return sum
+        return sam
     else:
         call = call[1:]
-        newsum = base60_list_sum2(*call,sum)
+        newsum = base60_list_sum2(call, sam)
         return newsum
-
-# Todo: make base60_sum2 recusive that's just kinda intresting :-)
