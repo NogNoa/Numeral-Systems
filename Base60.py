@@ -70,11 +70,6 @@ def string_sum_60(*cali):
     :param cali: strings of base60 numbers
     :return: string of base60 numbers
     """
-<<<<<<< HEAD
-    cali = tuple(base60_listise(call) for call in cali)
-    back = base60_list_sum(*cali)
-    back = base60_delistise(back)
-=======
     cali = tuple(string_listise(call) for call in cali)
     # cali = map(base60_listise, cali)
     back = list_sum_60(*cali)
@@ -89,7 +84,6 @@ def subtract_60(minuend, subtrahend):
     for i, val in enumerate(minuend):
         back.append(val - subtrahend[i])
     back = carry_60(back)
->>>>>>> 5f894970e1d6caa739c9bb5809b91ffe94956727
     return back
 
 
