@@ -40,11 +40,11 @@ class TimeCode:
 
 def timecode_listise(call: str):
     call = call.split(',')[::-1]
-    # call is now formated ['ms', 'h:m:s']
+    # call is now formatted ['ms', 'h:m:s']
     call[1] = Base60.string_listise(call[1])
     # noinspection PyTypeChecker
     call[0] = int(call[0])
-    # call is now formated [ms, [s, m, h]]
+    # call is now formatted [ms, [s, m, h]]
     return call
 
 
