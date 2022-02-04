@@ -1,9 +1,8 @@
 def main(inpt: list):
     m = "i"
     r = 0
-    q = False
-    while not q:
-        print("be ", r, "=", inpt[r])
+    while m != "q":
+        print("let ", r, "=", inpt[r])
         print(m)
         if m == "i":
             if inpt[r] == 1:
@@ -15,7 +14,7 @@ def main(inpt: list):
                 r += 1
                 m = "p"
         elif m == "p":
-            if inpt[r] == 1 or inpt[r] == 2 or inpt[r] == 3 or inpt[r] == "#":
+            if inpt[r] not in {1, 2, 3, "#"}:
                 inpt[r] = "Δ"
                 r += 1
             elif inpt[r] == "y":
@@ -23,7 +22,7 @@ def main(inpt: list):
                 r += 1
                 m = "g"
             elif inpt[r] == "Δ":
-                q = True
+                m = "q"
         elif m == "a":
             if inpt[r] == 1:
                 r += 1
@@ -64,7 +63,7 @@ def main(inpt: list):
                 r += 1
                 m = "p"
         elif m == "e":
-            if inpt[r] == 1 or inpt[r] == 2 or inpt[r] == 3:
+            if inpt[r] not in {1, 2, 3}:
                 r -= 1
             elif inpt[r] == "x":
                 inpt[r] = "Δ"
@@ -78,20 +77,20 @@ def main(inpt: list):
                 r += 1
                 m = "p"
             elif inpt[r] == "Δ":
-                q = True
+                m = "q"
             elif inpt[r] == "y":
                 inpt[r] = "Δ"
                 r += 1
                 m = "k"
         elif m == "j":
-            if inpt[r] == 1 or inpt[r] == 2 or inpt[r] == 3:
+            if inpt[r] not in {1, 2, 3}:
                 r -= 1
             elif inpt[r] == "x":
                 inpt[r] = "Δ"
                 r += 1
                 m = "f"
         elif m == "f":
-            if inpt[r] == 1 or inpt[r] == 2 or inpt[r] == 3 or inpt[r] == "y":
+            if inpt[r] not in {1, 2, 3, "y"}:
                 inpt[r] = "Δ"
                 r += 1
             elif inpt[r] == "#":
@@ -101,22 +100,22 @@ def main(inpt: list):
         elif m == "x":
             if inpt[r] == 1:
                 r -= 1
-            elif inpt[r] == 2 or inpt[r] == 3:
+            elif inpt[r] not in {2, 3}:
                 inpt[r] = int(1)
                 r -= 1
             elif inpt[r] == "Δ":
-                q = True
+                m = "q"
             elif inpt[r] == "x":
                 inpt[r] = int(1)
                 r += 1
                 m = "g"
         elif m == "k":
-            if inpt[r] == 1 or inpt[r] == "#":
+            if inpt[r] not in {1, "#"}:
                 inpt[r] = "Δ"
                 r += 1
                 m = "v"
             elif inpt[r] == "Δ":
-                q = True
+                m = "q"
         elif m == "v":
             if inpt[r] == 1:
                 inpt[r] = "Δ"
