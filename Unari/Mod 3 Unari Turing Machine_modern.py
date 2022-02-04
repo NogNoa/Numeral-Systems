@@ -1,9 +1,8 @@
-def main(inpt:list):
-    # inpt=[1,1,1,1,1,"#",1,1,"#",1,1,1,"Δ","Δ","f"]
+def main(inpt: list):
     m = "i"
     r = 0
     q = False
-    while q == False:
+    while not q:
         print("be ", r, "=", inpt[r])
         print(m)
         if m == "i":
@@ -126,34 +125,29 @@ def main(inpt:list):
                 inpt[r] = "Δ"
                 r += 1
                 m = "p"
-        # print("af ",r,"=",inpt[r])
     print("list:")
-    # r=0
-    # while not inpt[r]=="f":
-    # print(inpt[r])
-    # r+=1
     print(inpt)
 
 
 def read_eval():
     inpt = []
-    a = 3
-    while a > 0:
+    for _ in range(3):
+        b = input("Enter three numbers")
         try:
-            b = int(input())
-            while b > 0:
-                inpt.append(1)
-                b -= 1
-            a -= 1
-            if a > 0:
-                inpt.append("#")
+            b = int(b)
+        except ValueError:
+            if b:
+                print('please type a number')
             else:
-                inpt.append("Δ")
-            print(inpt)
-        except:
-            print('please type a number')
+                return [1, 1, 1, 1, 1, "#", 1, 1, "#", 1, 1, 1, "Δ", "Δ"]
+        for __ in range(b):
+            inpt.append(1)
+        inpt.append("#")
+        print(inpt)
+    inpt.append("Δ")
     return inpt
 
 
-if __name__ == __main__:
-    main(read_eval())
+if __name__ == "__main__":
+    while True:
+        main(inpt=read_eval())
