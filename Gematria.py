@@ -36,3 +36,9 @@ class Ot:
             return 100 * (ordslf - ord('צ'))
         else:
             return 10 * (self.ordinal - Ot('ט').ordinal)
+
+    def extra_int(self):
+        if self.val in finals:
+            return {'ץ': 900, 'ף': 800, 'ן': 700, 'ם': 600, 'ך': 500}[self.val]
+        else:
+            return int(self)
