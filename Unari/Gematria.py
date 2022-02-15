@@ -1,13 +1,28 @@
+"""
+א-ת
+0x05D0-0x05EA
+digraphs
+0x05F0-0x05F2
+"""
+
+סופיות = {'ף', 'ם', 'ץ', 'ך'}
+digraphs = {'װ', 'ײ', 'ױ'}
+
+
 class אות:
 
     def __init__(self, char):
-        unipt = char.encode("utf-8")
-        if b'\xd7\x90' <= unipt <= b'\xd7\xAA':
+        if ord('א') <= ord(char) <= ord('ת'):
             self.val = char
-        elif b'\xd7\xB0' <= unipt <= b'\xd7\xB2':
+        elif ord('װ') <= ord(char) <= ord('ײ'):
             raise ValueError  # Yiddish digraph
         else:
             raise ValueError
+
+    @property
+    def ordinal(self):
+        ordnl = ord(self.val) - ord('א')
+        ordnl += (self.val in סופיות)
 
     def __str__(self):
         return self.val
