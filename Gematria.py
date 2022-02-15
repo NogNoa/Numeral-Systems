@@ -5,11 +5,11 @@ digraphs
 0x05F0-0x05F2
 """
 
-סופיות = {'ף', 'ם', 'ץ', 'ן', 'ך'}
+finals = {'ף', 'ם', 'ץ', 'ן', 'ך'}
 digraphs = {'װ', 'ײ', 'ױ'}
 
 
-class אות:
+class Ot:
 
     def __init__(self, char):
         if ord('א') <= ord(char) <= ord('ת'):
@@ -21,11 +21,18 @@ class אות:
 
     @property
     def ordinal(self):
-        return ord(self.val) - (ord(self.val) > ord('ץ')) - (ord(self.val) > ord('ף')) - (ord(self.val) > ord('ך')) - (
-               ord(self.val) > ord('ם')) - (ord(self.val) > ord('ן')) - ord('א')
+        ordslf = ord(self.val)
+        return ordslf - (ordslf > ord('ץ')) - (ordslf > ord('ף')) - (ordslf > ord('ך')) - (
+               ordslf > ord('ם')) - (ordslf > ord('ן')) - ord('א') + 1
 
     def __str__(self):
         return self.val
 
     def __int__(self):
-        return {}
+        ordslf = ord('self.val')
+        if ordslf <= ord('י'):
+            return self.ordinal
+        elif ord('צ') < ordslf:
+            return 100 * (ordslf - ord('צ'))
+        else:
+            return 10 * (self.ordinal - Ot('ט').ordinal)
