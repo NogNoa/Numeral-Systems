@@ -5,7 +5,7 @@ digraphs
 0x05F0-0x05F2
 """
 
-סופיות = {'ף', 'ם', 'ץ', 'ך'}
+סופיות = {'ף', 'ם', 'ץ', 'ן', 'ך'}
 digraphs = {'װ', 'ײ', 'ױ'}
 
 
@@ -21,8 +21,8 @@ class אות:
 
     @property
     def ordinal(self):
-        ordnl = ord(self.val) - ord('א')
-        ordnl += (self.val in סופיות)
+        return ord(self.val) - (ord(self.val) > ord('ץ')) - (ord(self.val) > ord('ף')) - (ord(self.val) > ord('ך')) - (
+               ord(self.val) > ord('ם')) - (ord(self.val) > ord('ן')) - ord('א')
 
     def __str__(self):
         return self.val
