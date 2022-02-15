@@ -9,33 +9,37 @@ finals = {'ף', 'ם', 'ץ', 'ן', 'ך'}
 digraphs = {'װ', 'ײ', 'ױ'}
 
 
+def ordinal(char):
+    ord_call = ord(char)
+    return ord_call - (ord_call > ord('ץ')) - (ord_call > ord('ף')) - (ord_call > ord('ך')) - (
+           ord_call > ord('ם')) - (ord_call > ord('ן')) - ord('א') + 1
+
+
 class Ot:
 
     def __init__(self, char):
         if ord('א') <= ord(char) <= ord('ת'):
             self.val = char
-        elif ord('װ') <= ord(char) <= ord('ײ'):
+        elif char in digraphs:
             raise ValueError  # Yiddish digraph
         else:
             raise ValueError
 
     @property
     def ordinal(self):
-        ordslf = ord(self.val)
-        return ordslf - (ordslf > ord('ץ')) - (ordslf > ord('ף')) - (ordslf > ord('ך')) - (
-               ordslf > ord('ם')) - (ordslf > ord('ן')) - ord('א') + 1
+        return ordinal(self.val)
 
     def __str__(self):
         return self.val
 
     def __int__(self):
-        ordslf = ord('self.val')
-        if ordslf <= ord('י'):
-            return self.ordinal
-        elif ord('צ') < ordslf:
-            return 100 * (ordslf - ord('צ'))
+        ordslf = self.ordinal
+        if ordslf <= ordinal('י'):
+            return ordslf
+        elif ordinal('צ') < ordslf:
+            return 100 * (ordslf - ordinal('צ'))
         else:
-            return 10 * (self.ordinal - Ot('ט').ordinal)
+            return 10 * (ordslf - ordinal('ט'))
 
     def extra_int(self):
         if self.val in finals:
