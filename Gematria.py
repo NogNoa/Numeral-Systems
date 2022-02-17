@@ -15,13 +15,17 @@ def ordinal(char):
            ord_call > ord('ם')) - (ord_call > ord('ן')) - ord('א') + 1
 
 
+class YiddishError(ValueError):
+    pass
+
+
 class Ot:
 
     def __init__(self, char):
         if ord('א') <= ord(char) <= ord('ת'):
             self.val = char
         elif char in digraphs:
-            raise ValueError  # Yiddish digraph
+            raise YiddishError  # Yiddish digraph
         else:
             raise ValueError
 
@@ -46,3 +50,22 @@ class Ot:
             return {'ץ': 900, 'ף': 800, 'ן': 700, 'ם': 600, 'ך': 500}[self.val]
         else:
             return int(self)
+
+
+class Otiot:
+    def __init__(self, chari: str):
+        try:
+            self.val = (Ot(char) for char in chari)
+        except YiddishError:
+            # exception isn't caught
+            chari.replace("װ", "וו").replace("ײ", "יי").replace("ױ", "וי")
+            self.val = (Ot(char) for char in chari)
+
+    def __str__(self):
+        return "".join(str(char) for char in self.val)
+
+    def __int__(self):
+        return sum(int(char) for char in self.val)
+
+
+
