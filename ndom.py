@@ -7,16 +7,11 @@ def ones(call: int):
       "meregh"  #5
       ][call % 6]
 
-def low_sixes(call: int):
+def sixes(call: int):
     return ['',     #00
       "mer",        #10
       "mer an thef",#20
       ][call %3]
-
-def sixes(call):
-    tondor = (call // 3) * "tondor"
-    low_mers = low_sixes(call)
-    return glue(tondor, low_mers)
 
 def glue(pre : str, post: str):
     glue = bool(pre and post) * " abo "
@@ -25,7 +20,8 @@ def glue(pre : str, post: str):
 def ndom(call: int):
     sases = ones(call)
     mers = sixes(call // 6)
-    back = glue(mers, sases)
+    tondor = (call // 18) * "tondor"
+    back = glue(glue(tondor, mers), sases)
     return back
 
 for i in range(36):
