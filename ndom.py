@@ -13,19 +13,27 @@ def sixes(call: int):
       "mer an thef",#20
       ][call %3]
 
+def sixtysixes(call: int):
+    return ['',     #00
+      "nif",        #10
+      "nif thef",   #20
+      ][call %3]
+
 def glue(pre : str, post: str):
     glue = bool(pre and post) * " abo "
     return pre + glue + post
 
 def ndom(call: int):
+    if call > 215:
+        raise ValueError
     sases = ones(call)
     mers = sixes(call // 6)
-    tondors = (call // 18 % 2) * "tondor"
-    nif = (call // 36 % 2) * "nif"
-    tondors = glue(nif, tondors)
-    mers = glue(tondors, mers)
+    tondor = (call // 18 % 2) * "tondor"
+    nifs = sixtysixes(call // 36)
     back = glue(mers, sases)
+    back = glue(tondor, back)
+    back = glue(nifs, back)
     return back
 
-for i in range(36*2):
+for i in range(216):
     print(ndom(i))
