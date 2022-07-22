@@ -20,11 +20,11 @@ def glue(pre : str, post: str):
 def ndom(call: int):
     sases = ones(call)
     mers = sixes(call // 6)
-    tondor = (call // 18 % 2) * "tondor"
+    tondors = (call // 18 % 2) * "tondor"
     nif = (call // 36 % 2) * "nif"
+    tondors = glue(nif, tondors)
+    mers = glue(tondors, mers)
     back = glue(mers, sases)
-    back = glue(tondor, back)
-    back = glue(nif, back)
     return back
 
 for i in range(36*2):
